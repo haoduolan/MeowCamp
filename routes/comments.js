@@ -9,7 +9,7 @@ var middleware = require("../middleware");
 // ====================
 
 router.get("/new", middleware.isLoggedIn, function(req, res){
-    console.log(req.params.id);
+    //console.log(req.params.id);
     Campground.findById(req.params.id, function(err, campground){
        if(err) {
            console.log(err);
@@ -40,6 +40,7 @@ router.post("/", middleware.isLoggedIn, function(req, res){
                   //add username an id to comment
                   comment.author.id = req.user._id;
                   comment.author.username = req.user.username;
+                  comment.time = createDate();
                   //save comment
                   comment.save();
                   campground.comments.push(comment);
@@ -72,7 +73,9 @@ router.put("/:comment_id", middleware.checkCommentOwnership, function(req, res){
           res.redirect("back");
       } 
       else {
-          res.redirect("/campgrounds/" + req.params.id );
+          
+        updatedComment.time = createDate();
+        res.redirect("/campgrounds/" + req.params.id );
       }
    });
 });
@@ -91,3 +94,11 @@ router.delete("/:comment_id", middleware.checkCommentOwnership, function(req, re
 });
 
 module.exports = router;
+
+function createDate() {
+    var d = new Date();
+    var day = d.getUTCDate();
+    var month = d.getUTCMonth();
+    var year = d.getUTCFullYear();
+    return (month + 1) + "/" + day + "/" + year;
+}
