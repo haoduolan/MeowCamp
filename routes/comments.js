@@ -97,8 +97,8 @@ module.exports = router;
 
 function createDate() {
     var d = new Date();
-    var day = d.getUTCDate();
-    var month = d.getUTCMonth();
-    var year = d.getUTCFullYear();
+    var day = d.getDate();
+    var month = d.getMonth();
+    var year = d.getFullYear();
     return (month + 1) + "/" + day + "/" + year;
 }
